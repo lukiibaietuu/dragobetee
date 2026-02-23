@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dragobeteee💕</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    font-family: "Comic Sans MS", cursive;
+    background: linear-gradient(180deg, #ffd6ec, #ffc2e2);
+    overflow: hidden;
+    text-align: center;
+}
+
+/* container fix, nu mai sare layout-ul */
+.wrapper {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+    position: relative;
+}
+
+h1 {
+    font-size: 22px;
+    color: #ff4da6;
+    margin: 10px;
+}
+
+img {
+    width: 70%;
+    max-width: 240px;
+    border-radius: 20px;
+    margin: 10px 0;
+}
+
+/* zona unde are voie sa fuga butonul */
+.play-area {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    margin-top: 10px;
+}
+
+/* DA – fix, centrat */
+#yesBtn {
+    padding: 16px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 40px;
+    background: #ff66b3;
+    color: white;
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+}
+
+/* NU – fuge doar in play-area */
+#noBtn {
+    padding: 16px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 40px;
+    background: white;
+    color: #ff66b3;
+    position: absolute;
+    left: 40%;
+    top: 40%;
+    transition: left 0.15s ease, top 0.15s ease;
+}
+
+#message {
+    position: fixed;
+    bottom: 150px;   /* îl mută deasupra butonului Da */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 20px;
+    color: #ff3399;
+    z-index: 20;     /* peste restul elementelor */
+    text-align: center;
+    width: 90%;
+}
+
+/* inimioare */
+.heart {
+    position: fixed;
+    top: -10px;
+    font-size: 22px;
+    animation: fall linear forwards;
+    pointer-events: none;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(110vh);
+        opacity: 0;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrapper">
+    <h1>Vrei să fii iubita meaaa de dragobetee? 💕</h1>
+    <img src="https://media.giphy.com/media/3oriO0OEd9QIDdllqo/giphy.gif">
+
+    <div class="play-area" id="playArea">
+        <button id="noBtn">Nu 🥺</button>
+    </div>
+
+    <div id="message"></div>
+</div>
+
+<button id="yesBtn">Da 💖</button>
+
+<script>
+let noClicks = 0;
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const message = document.getElementById("message");
+const playArea = document.getElementById("playArea");
+
+/* functie fuga limitata */
+function moveButton() {
+    const maxX = playArea.clientWidth - noBtn.offsetWidth;
+    const maxY = playArea.clientHeight - noBtn.offsetHeight;
+
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+
+    noBtn.style.left = randomX + "px";
+    noBtn.style.top = randomY + "px";
+}
+
+/* fuge la hover desktop */
+noBtn.addEventListener("mouseover", moveButton);
+
+/* fuge la touch mobil */
+noBtn.addEventListener("touchstart", function(e){
+    e.preventDefault();
+    noClicks++;
+
+    if(noClicks === 1){
+        message.innerHTML = "Ești sigură? 🥺";
+    } else if(noClicks === 2){
+        message.innerHTML = "Hehe nu mă prinzi 😝";
+    } else {
+        message.innerHTML = "Nu scapi așa ușor 🙈💕";
+    }
+
+    moveButton();
+});
+
+/* DA */
+yesBtn.addEventListener("click", function(){
+    message.innerHTML = "YAAAYYY 💕 Te iubesc muuult 🥹💖✨";
+    yesBtn.style.display = "none";
+    noBtn.style.display = "none";
+    startHearts();
+});
+
+function startHearts(){
+    setInterval(createHeart, 120);
+}
+
+function createHeart(){
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "💖";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (Math.random()*2 + 3) + "s";
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 5000);
+}
+</script>
+
+</body>
+</html>
